@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 import hashlib
 import json
 import logging
@@ -352,7 +350,7 @@ def watch(args):
             time.sleep(config.watch_interval)
 
 
-if __name__ == '__main__':
+def run():
     parser = argparse.ArgumentParser(prog='keeplog',
                                      description="Two-way sync tool between a local file and Google Keep")
     subparsers = parser.add_subparsers()

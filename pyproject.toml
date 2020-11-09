@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "keeplog"
+version = "0.0.0"
+description = "Simple two-way synchronization tool to sync a local daily log with Google Keep"
+authors = ["Philipp C. Heckel <philipp.heckel@gmail.com>"]
+license = "Apache-2.0"
+readme = "README.md"
+homepage = "https://github.com/binwiederhier/keeplog"
+repository = "https://github.com/binwiederhier/keeplog"
+
+[tool.poetry.dependencies]
+python = "^3.6"
+gkeepapi = ">=0.13.1"
+inotify_simple = ">=1.3.5"
+
+[tool.poetry.scripts]
+keeplog = "keeplog:run"
+
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"

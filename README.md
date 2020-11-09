@@ -31,21 +31,23 @@ Installation
 1. Create a [Google App Password](https://myaccount.google.com/apppasswords) for keeplog
 2. Create a config file `~/.keeplog/config` from [this template](config). Be sure to edit at least 
    `user=`, `pass=` and `file=`.
-3. Install dependencies via `pip3 install -r requirements.txt`.
-4. Optionally (but highly recommended), you may either regularly run `keeplog.py sync` as a cron, or `keeplog.py watch` 
+3. Install [Poetry](https://python-poetry.org) if you don't have it.
+4. Install the application via Poetry into a virtualenv: `poetry install`
+5. Optionally (but highly recommended), you may either regularly run `poetry run keeplog sync` as a cron, or `poetry run keeplog watch` 
    as a long running process, such as a systemd user service:
    
 ```
-$ vi ~/.config/systemd/user/keeplog.service
+$ cat > ~/.config/systemd/user/keeplog.service <<EOF
 [Unit]
 Description=Keeplog watch daemon
 
 [Service]
-ExecStart=/path/to/keeplog/keeplog.py watch
+ExecStart=poetry run keeplog watch
+WorkingDirectory=/path/to/keeplog
 
 [Install]
 WantedBy=default.target
-
+EOF
 $ systemctl enable --user keeplog
 $ systemctl start --user keeplog
 $ journalctl --user -f -u keeplog
@@ -55,13 +57,13 @@ Usage
 --
 keeplog has two commands:
 
-- `keeplog.py sync` synchronizes local file with Google Keep
-- `keeplog.py watch` monitors the local file for changes and syncs when changed
+- `keeplog sync` synchronizes local file with Google Keep
+- `keeplog watch` monitors the local file for changes and syncs when changed
 
 Manually (or via cron):
 
 ```
-$ ./keeplog.py sync
+$ poetry run keeplog sync
 2020-11-08 13:33:50,038 [INFO] Logging in with token
 2020-11-08 13:33:59,221 [INFO] Successfully logged in
 2020-11-08 13:33:59,221 [INFO] Comparing remote and local
@@ -73,7 +75,7 @@ $ ./keeplog.py sync
 Using file system monitoring:
 
 ```
-$ ./keeplog.py watch
+$ poetry run keeplog watch
 2020-11-08 21:55:23,901 [INFO] Watching local log file for changes
 2020-11-08 21:55:31,728 [INFO] File modified, triggering sync
 ...
@@ -87,4 +89,4 @@ Copyright & recognition
 Philipp C. Heckel, licensed under the [Apache 2.0 License](LICENSE).
 
 Thanks very much to [kiwiz](https://github.com/kiwiz) for his excellent [gkeepapi](https://github.com/kiwiz/gkeepapi),
-and to [chrisjbillington](https://github.com/chrisjbillington) for his wonderfully easy [inotify_simple](https://github.com/chrisjbillington/inotify_simple). 
+and to [chrisjbillington](https://github.com/chrisjbillington) for his wonderfully easy [inotify_simple](https://github.com/chrisjbillington/inotify_simple).
